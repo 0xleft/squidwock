@@ -1,5 +1,11 @@
 import { Outlet, Route, Routes } from "react-router-dom"
 import Index from "./pages/Index"
+import Login from "./pages/Login"
+import User from "./pages/User"
+import Post from "./pages/Post"
+import About from "./pages/About"
+import Contact from "./pages/Contact"
+import NoMatch from "./NoMatch"
 
 function App() {
 	return (
