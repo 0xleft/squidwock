@@ -13,47 +13,47 @@ import { AppShell, MantineProvider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 function App() {
-	return (
-		<>
-			<MantineProvider>
-				<Routes>
-					<Route path="/" element={<Layout />}>
-						<Route path="/" element={<Index />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/user/:id" element={<User />} />
-						<Route path="/post/:id" element={<Post />} />
-						<Route path="/about" element={<About />} />
-						<Route path="/contact" element={<Contact />} />
-						<Route path="*" element={<NoMatch />} />
-					</Route>
-				</Routes>
-			</MantineProvider>
-		</>
-	)
+  return (
+    <>
+      <MantineProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/user/:id" element={<User />} />
+            <Route path="/post/:id" element={<Post />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NoMatch />} />
+          </Route>
+        </Routes>
+      </MantineProvider>
+    </>
+  )
 }
 
 function Layout() {
   const [opened, { toggle }] = useDisclosure();
 
-	return (
-		<>
-			<AppShell
-				header={{ height: 60 }}
-				navbar={{
-					width: 200,
-					breakpoint: 'sm',
-					collapsed: { mobile: !opened },
-				}}
-				padding="md"
-			>
-				<Header opened={opened} toggle={toggle} />
-				<AppShell.Main>
-					<Outlet />
-				</AppShell.Main>
-				<Footer />
-			</AppShell>
-		</>
-	)
+  return (
+    <>
+      <AppShell
+        header={{ height: 60 }}
+        navbar={{
+          width: 200,
+          breakpoint: 'sm',
+          collapsed: { mobile: !opened },
+        }}
+        padding="md"
+      >
+        <Header opened={opened} toggle={toggle} />
+        <AppShell.Main>
+          <Outlet />
+        </AppShell.Main>
+        <Footer />
+      </AppShell>
+    </>
+  )
 }
 
 export default App
