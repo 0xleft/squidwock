@@ -1,3 +1,4 @@
+import '@mantine/core/styles.css';
 import { Outlet, Route, Routes } from "react-router-dom"
 import Index from "./pages/Index"
 import Login from "./pages/Login"
@@ -8,10 +9,8 @@ import Contact from "./pages/Contact"
 import NoMatch from "./NoMatch"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
-
-import '@mantine/core/styles.css';
-
-import { MantineProvider } from '@mantine/core';
+import { AppShell, MantineProvider } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 function App() {
 	return (
@@ -25,7 +24,6 @@ function App() {
 						<Route path="/post/:id" element={<Post />} />
 						<Route path="/about" element={<About />} />
 						<Route path="/contact" element={<Contact />} />
-
 						<Route path="*" element={<NoMatch />} />
 					</Route>
 				</Routes>
@@ -35,13 +33,25 @@ function App() {
 }
 
 function Layout() {
+  const [opened, { toggle }] = useDisclosure();
+
 	return (
 		<>
-			<Header />
-			<main>
-				<Outlet />
-			</main>
-			<Footer />
+			<AppShell
+				header={{ height: 60 }}
+				navbar={{
+					width: 200,
+					breakpoint: 'sm',
+					collapsed: { mobile: !opened },
+				}}
+				padding="md"
+			>
+				<Header opened={opened} toggle={toggle} />
+				<AppShell.Main>
+					<Outlet />
+				</AppShell.Main>
+				<Footer />
+			</AppShell>
 		</>
 	)
 }
