@@ -6,22 +6,30 @@ import Post from "./pages/Post"
 import About from "./pages/About"
 import Contact from "./pages/Contact"
 import NoMatch from "./NoMatch"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
+
+import '@mantine/core/styles.css';
+
+import { MantineProvider } from '@mantine/core';
 
 function App() {
 	return (
 		<>
-			<Routes>
-				<Route path="/" element={<Layout />}>
-					<Route path="/" element={<Index />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/user/:id" element={<User />} />
-					<Route path="/post/:id" element={<Post />} />
-					<Route path="/about" element={<About />} />
-					<Route path="/contact" element={<Contact />} />
+			<MantineProvider>
+				<Routes>
+					<Route path="/" element={<Layout />}>
+						<Route path="/" element={<Index />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/user/:id" element={<User />} />
+						<Route path="/post/:id" element={<Post />} />
+						<Route path="/about" element={<About />} />
+						<Route path="/contact" element={<Contact />} />
 
-					<Route path="*" element={<NoMatch />} />
-				</Route>
-			</Routes>
+						<Route path="*" element={<NoMatch />} />
+					</Route>
+				</Routes>
+			</MantineProvider>
 		</>
 	)
 }
@@ -29,11 +37,11 @@ function App() {
 function Layout() {
 	return (
 		<>
-			{/* <Header /> */}
+			<Header />
 			<main>
 				<Outlet />
 			</main>
-			{/* <Footer /> */}
+			<Footer />
 		</>
 	)
 }
