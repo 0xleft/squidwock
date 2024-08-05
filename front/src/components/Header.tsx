@@ -1,23 +1,14 @@
-import { AppShell, Burger, Group } from "@mantine/core"
-import Navbar from "./Navbar";
+import { AppShell, Group } from "@mantine/core"
+import { TopNavbar } from "./Navbar";
 
-interface HeaderProps {
-  opened: boolean;
-  toggle: () => void;
-}
-
-function Header({ opened, toggle }: HeaderProps) {
+function Header() {
   return (
     <>
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Navbar />
+        <Group h="100%" px="md" className="flex flex-row">
+          <TopNavbar />
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <Navbar />
-      </AppShell.Navbar>
     </>
   )
 }

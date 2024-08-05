@@ -10,12 +10,11 @@ import NoMatch from "./NoMatch"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import { AppShell, MantineProvider } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 
 function App() {
   return (
     <>
-      <MantineProvider>
+      <MantineProvider defaultColorScheme='dark'>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Index />} />
@@ -33,8 +32,6 @@ function App() {
 }
 
 function Layout() {
-  const [opened, { toggle }] = useDisclosure();
-
   return (
     <>
       <AppShell
@@ -42,11 +39,11 @@ function Layout() {
         navbar={{
           width: 200,
           breakpoint: 'sm',
-          collapsed: { mobile: !opened },
+          collapsed: { mobile: true, desktop: true },
         }}
         padding="md"
       >
-        <Header opened={opened} toggle={toggle} />
+        <Header />
         <AppShell.Main>
           <Outlet />
         </AppShell.Main>
