@@ -1,16 +1,46 @@
 import { Button, Input, rem, Title } from "@mantine/core"
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink, useNavigate } from "react-router-dom"
 import { Spotlight, SpotlightActionData, spotlight } from '@mantine/spotlight';
-import { IconSearch } from '@tabler/icons-react';
+import { IconAnchor, IconContract, IconHome, IconSearch } from '@tabler/icons-react';
 import { ChangeEvent, useState } from "react";
 
 function TopNavbar() {
-  const [search, setSearch] = useState<SpotlightActionData[]>([])
+  const navigate = useNavigate()
+
+  const [search, setSearch] = useState<SpotlightActionData[]>([
+    {
+      id: 'posts',
+      label: 'Posts',
+      description: 'General information about all the posts',
+      onClick: () => {
+        navigate('/posts')
+      },
+      leftSection: <IconSearch size={16} />
+    },
+    {
+      id: 'about',
+      label: 'About',
+      description: 'Learn more about the site',
+      onClick: () => {
+        navigate('/about')
+      },
+      leftSection: <IconAnchor size={16} />
+    },
+    {
+      id: 'contact',
+      label: 'Contact',
+      description: 'Contact the site administrator',
+      onClick: () => {
+        navigate('/contact')
+      },
+      leftSection: <IconContract size={16} />
+    }
+  ])
 
   function updateSearch(value: ChangeEvent<HTMLInputElement>) {
     const query = value.target.value.toLowerCase();
-    query.length > 0    
-    setSearch([]);
+    query.length > 0
+
   }
 
   return (
@@ -24,7 +54,6 @@ function TopNavbar() {
           <Button className="md:hidden flex" variant="outline" onClick={spotlight.open}><IconSearch style={{ width: rem(20), height: rem(20) }} stroke={1.5} /></Button>
           <Spotlight
             actions={search}
-            nothingFound="Nothing found..."
             highlightQuery
             searchProps={{
               leftSection: <IconSearch style={{ width: rem(20), height: rem(20) }} stroke={1.5} />,
