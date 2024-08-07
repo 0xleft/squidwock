@@ -50,8 +50,11 @@ var UserSession = (function() {
     checkValid();
   }
 
+  // url must start with a /
   var makeRequest = function(method : string, url : string, data : any) {
-    return fetch(url, {
+    const fullUrl = import.meta.env.VITE_BACKEND_URL + url;
+
+    return fetch(fullUrl, {
       method: method,
       headers: {
         'Content-Type': 'application/json',

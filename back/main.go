@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	database "squidwock.com/backend/src/database"
+	"squidwock.com/backend/src/routes"
 )
 
 func main() {
@@ -19,6 +20,10 @@ func main() {
 
 	r := mux.NewRouter()
 	http.Handle("/", r)
+
+	// Routes
+	routes.Posts(r, db)
+	routes.User(r, db)
 
 	srv := &http.Server{
 		Handler:      r,
