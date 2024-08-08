@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"squidwock.com/backend/src/database"
 )
 
 type App struct {
@@ -17,11 +18,43 @@ func (app *App) userLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) userLogin(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("User login"))
+	query, err := app.DB.Prepare("SELECT * FROM users WHERE email = $1 AND password = $2")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer query.Close()
+
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+
+	if email == "" || password == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err = query.QueryRow(email, password).Scan()
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	// create session
+	session, err := database.CreateSession(app.DB, email)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write([]byte(session))
 }
 
 func (app *App) userView(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("User view"))
+}
+
+func (app *App) userSelf(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("User self"))
 }
 
 func (app *App) userEdit(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +87,7 @@ func (app *App) InitializeRoutes() {
 	// user
 	r.HandleFunc("/api/user/login", app.userLogin)
 	r.HandleFunc("/api/user/logout", app.userLogout)
+	r.HandleFunc("/api/user/self", app.userSelf)
 	r.HandleFunc("/api/user/{id}", app.userView)
 	r.HandleFunc("/api/user/{id}/edit", app.userEdit)
 
