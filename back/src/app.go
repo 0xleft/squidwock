@@ -2,6 +2,7 @@ package back
 
 import (
 	"database/sql"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,7 +15,19 @@ type App struct {
 }
 
 func (app *App) userLogout(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("User logout"))
+	token := r.Header.Get("Authorization")
+	if token == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err := database.DeleteSession(app.DB, token)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (app *App) userLogin(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +67,25 @@ func (app *App) userView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) userSelf(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("User self"))
+	token := r.Header.Get("Authorization")
+	if token == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	session, err := database.GetSession(app.DB, token)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	sessionJson, err := json.Marshal(session)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(sessionJson)
 }
 
 func (app *App) userEdit(w http.ResponseWriter, r *http.Request) {
